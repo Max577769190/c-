@@ -1,11 +1,6 @@
 #include<iostream>
 #include<string>
-struct Book {
-	std::string book_isbn;
-	int book_number = 0;
-	double book_price = 0;
-	double book_revenue = 0;
-};
+#include"Book_data.h"
 int main()
 {
 	Book book1, temp, book2;
