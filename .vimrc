@@ -41,13 +41,15 @@ let g:winManagerWindowLayout='FileExplorer|TagList'
 nmap wm :WMToggle<CR>
 
 Bundle 'taglist.vim'
+"关闭单个文件的taglist按d
+"寻找定义的tag按o
 let Tlist_Ctags_Cmd='ctags'
 let Tlist_Show_One_Files=1
 let Tlist_WinWidt=28
 let Tlist_Exit_OnlyWindow=1
 let Tlist_Use_Left_Windo=1
 
-"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Valloric/YouCompleteMe'
 
 Bundle 'scrooloose/nerdcommenter'
 let mapleader=","
@@ -55,10 +57,33 @@ let mapleader=","
 "，c<space>取消掉注释
 "，cm注释块
 
+Bundle 'scrooloose/syntastic'
+let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%w{Warn: %fw #%w}]'
+set statusline+=%#warningmsg#
+set statusline+=%{StntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list=1
+"自动打开location list
+let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_loc_height=5
+let g:syntastic_check_on_open=1
+let g:syntastic_check_on_wp=0
+
+let g:syntastic_cpp_comiler='g++'
+let g:syntastic_cpp_comiler_options='-std=c++11 -Wall'
+let g:syntastic_cpp_config_file='.syntastic_cpp_config'
+
+
+Bundle 'jiangmiao/auto-pairs'
+"括号自动补全
+
+Bundle 'altercation/vim-colors-solarized'
+
 call vundle#end()
 filetype plugin indent on
 "******************************************************
-"bundle配置
+"bundle配置end
 "******************************************************
 
 
@@ -92,7 +117,12 @@ set backspace=indent,eol,start whichwrap+=<,>,[,] "退格键使用
 filetype on
 filetype plugin on
 filetype indent on
+filetype plugin indent on
 
+"全能补全 不会用
+"set completeopt=longest,menu
+
+set autochdir "自动设置当前编辑的目录为工作目录
 syntax enable
 syntax on "语法高亮
 set nu
@@ -115,9 +145,105 @@ set novisualbell
 set nobackup
 set noswapfile
 
-"colorscheme solarized 
-"set background=dark
+"启用256色
+"set t_Co=256
 
-"自带的自动补全
-"<ctrl+x> + <tab>
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+"找到c.vim cpp.vim
+syn match cFunction "\<[a-zA-Z_][a-zA-Z_0-9]*\>[^()]*)("me=e-2
+syn match cFunction "\<[a-zA-Z_][a-zA-Z_0-9]*\>s*("me=e-2
+
+"""""""""""""""""""""""""""""
+"关于gvim的一些配置
+"“‘”“”“”“”“”“”“”“”“”“”’“”“”“”
+if has("gui_running")
+	let g:isGUI = 1
+else
+	let g:isGUI = 0
+endif
+
+if (g:isGUI)
+	"去掉边框
+	set go = 
+
+	"设置字体以及行间距
+	set guifont=DejaVu\ Sans\ Mono\ 11
+	set guifontwide=FZXingKai\-S04\ 12
+
+	"高亮显示当前行与列
+	set cursorline
+	set cursorcolumn
+
+	"配色方案设置
+	colorscheme solarized
+	"colorscheme desert
+	set background=dark
+
+	"全屏
+	function! ToggleFullScreen()
+		call system("wmctrl -r :ACTIVE: -b toggle,fullscreen")
+	endfunction
+	map <silent><F11> :call ToggleFullScreen()<CR>
+endif
+"""""""""""""""""""""""""""""""""""""""""""""'""""""'"""""""""""""
+""编译c++文件
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set makeprg=g++\ -g\ %
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""''""
+" =========== NERDTree 和 Tagbar 共用一个窗口 ========  
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  
+function! ToggleNERDTreeAndTagbar()   
+let w:jumpbacktohere = 1  
+  
+" Detect which plugins are open  
+if exists('t:NERDTreeBufName')  
+    let nerdtree_open = bufwinnr(t:NERDTreeBufName) != -1  
+else  
+    let nerdtree_open = 0  
+endif  
+let tagbar_open = bufwinnr('__Tagbar__') != -1  
+  
+" Perform the appropriate action  
+if nerdtree_open && tagbar_open  
+    NERDTreeClose  
+    TagbarClose  
+elseif nerdtree_open  
+    TagbarOpen  
+    wincmd J  
+    wincmd k  
+    wincmd L  
+elseif tagbar_open  
+    NERDTree  
+    wincmd J  
+    wincmd k  
+    wincmd L  
+else  
+    NERDTree  
+    TagbarOpen  
+    wincmd J  
+    wincmd k  
+    wincmd L  
+endif  
+  
+" 改变窗口宽度  
+vertical resize +50   
+  
+" Jump back to the original window  
+" for window in range(1, winnr('$'))  
+"     execute window . 'wincmd w'  
+"     if exists('w:jumpbacktohere')  
+"        unlet w:jumpbacktohere  
+"        break  
+"    endif  
+"endfor    
+  
+endfunction  
+  
+" nnoremap <leader>\ :call ToggleNERDTreeAndTagbar()<CR>  
+   
+" 打开 vim 时自动打开 NERDTree 和 Tagbar  
+"autocmd vimenter * call ToggleNERDTreeAndTagbar()  
+  
+" ===================================================  
