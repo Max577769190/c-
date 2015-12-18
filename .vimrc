@@ -3,7 +3,6 @@
 "******************************************************
 set nocompatible
 filetype off
-"set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -12,6 +11,8 @@ Bundle 'gmarik/vundle'
 Bundle 'majutsushi/tagbar'
 "nmap <Leader> tb :TagbarToggle<CR>
 map <F3> :Tagbar<CR>
+
+Bundle 'vim-scripts/a.vim'
 
 Bundle 'scrooloose/nerdtree'
 map <F2> :NERDTreeToggle<CR>
@@ -27,6 +28,9 @@ map <F12> :MBEbn<CR>
 
 Bundle 'bling/vim-airline'
 set laststatus=2
+let g:ariline#extensions#tabline#enabled=1
+let g:ariline#extensions#tabline#left_sep=' '
+let g:ariline#extensions#tabline#left_alt_sep='|'
 
 Bundle 'vim-scripts/winmanager'
 "let g:NERDTree_title="[NERDTree]"
@@ -58,27 +62,45 @@ let mapleader=","
 "，cm注释块
 
 Bundle 'scrooloose/syntastic'
-let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%w{Warn: %fw #%w}]'
-set statusline+=%#warningmsg#
-set statusline+=%{StntasticStatuslineFlag()}
-set statusline+=%*
+"let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%w{Warn: %fw #%w}]'
+"set statusline+=%#warningmsg#
+"set statusline+=%{StntasticStatuslineFlag()}
+"set statusline+=%*
 
-let g:syntastic_always_populate_loc_list=1
-"自动打开location list
-let g:syntastic_auto_loc_list=1
-let g:syntastic_auto_loc_height=5
-let g:syntastic_check_on_open=1
-let g:syntastic_check_on_wp=0
+"let g:syntastic_always_populate_loc_list=1
+""自动打开location list
+"let g:syntastic_auto_loc_list=1
+"let g:syntastic_auto_loc_height=5
+"let g:syntastic_check_on_open=1
+"let g:syntastic_check_on_wp=0
 
-let g:syntastic_cpp_comiler='g++'
-let g:syntastic_cpp_comiler_options='-std=c++11 -Wall'
-let g:syntastic_cpp_config_file='.syntastic_cpp_config'
+"let g:syntastic_cpp_comiler='g++'
+"let g:syntastic_cpp_comiler_options='-std=c++11 -Wall'
+"let g:syntastic_cpp_config_file='.syntastic_cpp_config'
 
 
 Bundle 'jiangmiao/auto-pairs'
 "括号自动补全
 
 Bundle 'altercation/vim-colors-solarized'
+
+Bundle 'octol/vim-cpp-enhanced-highlight'
+
+"Bundle 'godlygeek/tabular'
+"Bundle 'plasticboy/vim-markdown'
+"let g:vim_markdown_folding_disable=1
+"set foldenable
+
+Bundle 'vim-scripts/DoxygenToolKit.vim'
+":Dox自动生成函数说明
+":DoxAuthor自动生成文件说明
+":DoxLic生成许可之类的东西
+let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
+let g:DoxygenToolkit_paramTag_pre="@Param "
+"let g:DoxygenToolkit_returnTag="@Return  "
+let g:DoxygenToolkit_authorName="Max577769190"
+let g:DoxygenToolkit_briefTag_funcName="yes"
+
 
 call vundle#end()
 filetype plugin indent on
@@ -126,6 +148,7 @@ set autochdir "自动设置当前编辑的目录为工作目录
 syntax enable
 syntax on "语法高亮
 set nu
+set gcr=a:block-blinkon0
 
 set autoindent "自动对齐
 set smartindent "智能选择对其方式
@@ -142,17 +165,32 @@ set ruler
 
 set novisualbell
 
+"没有多余的文件
 set nobackup
 set noswapfile
 
-"启用256色
-"set t_Co=256
+"用256色
+"t t_Co=256
 
+"UTF-8编码
+set encoding=utf-8
 
 "找到c.vim cpp.vim
 syn match cFunction "\<[a-zA-Z_][a-zA-Z_0-9]*\>[^()]*)("me=e-2
 syn match cFunction "\<[a-zA-Z_][a-zA-Z_0-9]*\>s*("me=e-2
 
+"窗口切换
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+
+"避免出现多余的空白字符
+"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+"显示行编辑行总在中间
+set so=20
 """""""""""""""""""""""""""""
 "关于gvim的一些配置
 "“‘”“”“”“”“”“”“”“”“”“”’“”“”“”
@@ -175,8 +213,9 @@ if (g:isGUI)
 	set cursorcolumn
 
 	"配色方案设置
-	colorscheme solarized
+	"colorscheme solarized
 	"colorscheme desert
+	colorscheme molokai
 	set background=dark
 
 	"全屏
