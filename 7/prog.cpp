@@ -1,30 +1,15 @@
-#ifndef PROG_H
-#define PROG_H
-
+#include"Debug.h"
 #include<iostream>
-#include<string>
-#include<vector>
-
-class NoDefault {
-public:
-	NoDefault (int i) {  };
-};
-
-class C {
-public:
-	C (): a(0) {  };
-	NoDefault sb() { return a; };
-
-private:
-	NoDefault a;
-};
-#endif
+using std::cerr;
+using std::endl;
 
 int main()
 {
-	C c;
-	NoDefault a = c.sb();
-	int i = 23;
-	std::cout << i << std::endl;
+	constexpr Debug io_sub(false, true, false);
+	if(io_sub.any())
+		cerr << "Print appropriate error message" << endl;
+	constexpr Debug prod(false);
+	if(prod.any())
+		cerr << "Print an error message" << endl;
 	return 0;
 }
