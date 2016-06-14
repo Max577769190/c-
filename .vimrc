@@ -126,7 +126,6 @@ set autochdir "自动设置当前编辑的目录为工作目录
 syntax enable
 syntax on "语法高亮
 set nu
-set gcr=a:block-blinkon0
 set autoindent "自动对齐
 set smartindent "智能选择对其方式
 "设置tab键为4个空格 行之间交错是使用4个空格
@@ -156,6 +155,12 @@ nnoremap <C-H> <C-W><C-H>
 "au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 "显示行编辑行总在中间
 set so=20
+
+"禁止光标闪烁，只对gvim生效
+set gcr=a:block-blinkon0
+
+set cursorline
+set cursorcolumn
 """""""""""""""""""""""""""""
 "关于gvim的一些配置
 "“‘”“”“”“”“”“”“”“”“”“”’“”“”“”
@@ -168,8 +173,8 @@ if (g:isGUI)
 "去掉边框
 set go =
 "设置字体以及行间距
-set guifont=DejaVu\ Sans\ Mono\ 12
-set guifontwide=FZXingKai\-S04\ 12
+set guifont=DejaVu\ Sans\ Mono\ 11
+set guifontwide=FZXingKai\-S04\ 11
 "高亮显示当前行与列
 set cursorline
 set cursorcolumn
