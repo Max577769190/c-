@@ -10,7 +10,7 @@ filetype on
 filetype plugin on
 filetype indent on
 filetype plugin indent on  " Load plugins according to detected filetype.
-syntax enab
+syntax enable
 syntax on                  " Enable syntax highlighting.
 
 set nu
